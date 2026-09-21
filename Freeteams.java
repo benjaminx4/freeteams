@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Freeteams{
-  public int arrayIndexOf(String thing; String[] array){
+  public int arrayIndexOf(String[] array, String thing){
     for (int i = 0; i < array.length; i++){
       if (thing == array[i]) return i;
     }
@@ -40,24 +40,37 @@ public class Freeteams{
     while (k > 0){
       int current = (int) (Math.random() * players);
       if pairings.contains(names[current] + ",") == false{
+        pairings += names[current] + ",";
         int teamSizeReq = (int) Math.round((players - pairingsSize) / k);
         int teamSize = 1;
+        while (teamSize < teamSizeReq){
+          if (yes[current].indexOf(",") > 0){
+            String[] currentYes = new String[players];
+            int l = 0;
+            while (yes[current].indexOf(",") > 0){
+              currentYes[l] = yes[current].substring(0,indexOf(","));
+              yes[current] = yes[current].substring(indexOf(",") + 1);
+              l++;
+            }
 
-        if (yes[current].indexOf(",") > 0){
-          String[] currentYes = new String[players];
-          int l = 0;
-          while (yes[current].indexOf(",") > 0){
-            currentYes[l] = yes[current].substring(0,indexOf(","));
-            yes[current] = yes[current].substring(indexOf(",") + 1);
-            l++;
+            while (l > 0 && teamSize < teamSizeReq){
+              int check = (int) (Math.random() * l);
+              if (no[arrayIndexOf(names, currentYes[check])].contains(currentYes[l] + ",") == false){
+                pairings += currentYes[check] + ",";
+                teamSize++;
+              }
+              else{
+                for (int m = check; m < players - 1; m++){
+                  currentYes[m] = currentYes[m + 1];
+                }
+                l--;
+              }
+            }
           }
 
-          int check = (int) (Math.random() * l);
-          if (currentYes[l])
-        }
-
-        else{
-          // random number, check not in no, then pair
+          else{
+            // random number, check not in no, then pair
+          }
         }
       }
     }
