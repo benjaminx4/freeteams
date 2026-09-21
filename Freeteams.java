@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Freeteams{
-  public int arrayIndexOf(String[] array, String thing){
+  public static int arrayIndexOf(String[] array, String thing){
     for (int i = 0; i < array.length; i++){
       if (thing == array[i]) return i;
     }
@@ -28,10 +28,10 @@ public class Freeteams{
     String[] yes = new String[players];
     String[] no = new String[players];
     for (int j = 0; j < players; j++){
-      names[j] = prefs[j].substring(0,indexOf(";"));
-      prefs[j] = prefs[j].substring(indexOf(";") + 1);
-      yes[j] = prefs[j].substring(0,indexOf(";")) + ", ";
-      no[j] = prefs[j].substring(indexOf(";" + 1)) + ", ";
+      names[j] = prefs[j].substring(0,prefs[j].indexOf(";"));
+      prefs[j] = prefs[j].substring(prefs[j].indexOf(";") + 1);
+      yes[j] = prefs[j].substring(0,prefs[j].indexOf(";")) + ", ";
+      no[j] = prefs[j].substring(prefs[j].indexOf(";") + 1) + ", ";
     }
 
     int k = teams;
@@ -39,25 +39,29 @@ public class Freeteams{
     int pairingsSize = 0;
     while (k > 0){
       int current = (int) (Math.random() * players);
-      if pairings.contains(names[current] + ",") == false{
-        pairings += names[current] + ",";
+      if (pairings.contains(names[current] + ",") == false){
+        pairings += names[current] + ", ";
+        pairingsSize++;
         int teamSizeReq = (int) Math.round((players - pairingsSize) / k);
         int teamSize = 1;
+        System.out.println(pairings);
         while (teamSize < teamSizeReq){
           if (yes[current].indexOf(",") > 0){
             String[] currentYes = new String[players];
             int l = 0;
             while (yes[current].indexOf(",") > 0){
-              currentYes[l] = yes[current].substring(0,indexOf(","));
-              yes[current] = yes[current].substring(indexOf(",") + 1);
+              currentYes[l] = yes[current].substring(0,yes[current].indexOf(","));
+              yes[current] = yes[current].substring(yes[current].indexOf(",") + 1);
               l++;
             }
 
             while (l > 0 && teamSize < teamSizeReq){
               int check = (int) (Math.random() * l);
               if (no[arrayIndexOf(names, currentYes[check])].contains(currentYes[l] + ",") == false){
-                pairings += currentYes[check] + ",";
+                pairings += currentYes[check] + ", ";
+                pairingsSize++;
                 teamSize++;
+                System.out.println(pairings);
               }
               else{
                 for (int m = check; m < players - 1; m++){
@@ -69,10 +73,25 @@ public class Freeteams{
           }
 
           else{
-            // random number, check not in no, then pair
+            int check = (int) (Math.random() * players);
+            if (names[current] != names[check]){
+              if (no[current].contains(names[check] + ",")){
+                if (no[check].contains(names[current] + ",")){
+                  pairings += names[check] + ", ";
+                  pairingsSize++;
+                  teamSize++;
+                  System.out.println(pairings);
+                }
+              }
+            }
           }
         }
       }
+
+      pairings += "\n";
+      k--;
     }
+
+    System.out.println(pairings);
   }
 }
