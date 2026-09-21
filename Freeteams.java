@@ -2,9 +2,8 @@ import java.util.Scanner;
 
 public class Freeteams{
   public static void main(String[] args){
-    Scanner myObj = new Scanner(System.in);
-    System.out.println("Say hello!");
-    String hello = myObj.nextLine();
-    System.out.println(hello);
+    Scanner input1 = new Scanner(System.in);
+    System.out.print("How many teams do you want? ");
+    int teams = input1.nextInt();
   }
 }
